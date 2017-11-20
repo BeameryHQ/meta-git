@@ -29,6 +29,9 @@ The actions avaliable are:
 add
     This will add a new project to managed by the meta repo and set
     the default tracking branch to master.
+checkout
+    This will allow to switch / create meta branches and ensure
+    the submodules are at the correct state.
 clone
     Downloads an entire meta repo and all of the submodules added.
 diff
@@ -63,6 +66,10 @@ EOF
 }
 
 _check_in_meta_repo() {
+  # Making sure we show the help message outside a meta repo
+  if [ ${1:-''} = '-h' ];then
+    return
+  fi
   if [ ! -f "${1:-`pwd`}/.gitmodules" ];then
     >&2 echo  "[ERROR] There is no submodule file inside the current directory"
     >&2 echo  "[ERROR] Stopping any further action"
@@ -86,7 +93,7 @@ case ${ACTION} in
         _add_project $@
         ;;
     checkout)
-        _check_in_meta_repo
+        _check_in_meta_repo $@
         _checkout_meta $@
         ;;
     clone)
@@ -94,17 +101,12 @@ case ${ACTION} in
         ;;
     diff)
         # Compares local changes with a different branch
-        _check_in_meta_repo
+        _check_in_meta_repo $@
         _show_diff $@
-        ;;
-    fetch)
-        # Get all updates from all the projects from your local branch
-        _check_in_meta_repo
-        _fetch_changes $@
         ;;
     foreach)
         # Execute the given commands inside each project
-        _check_in_meta_repo
+        _check_in_meta_repo $@
         _for_each $@
         ;;
     -h)
@@ -114,14 +116,19 @@ case ${ACTION} in
     install)
         _install
         ;;
+    pull)
+        # Get all updates from all the projects from your local branch
+        _check_in_meta_repo $@
+        _pull_changes $@
+        ;;
     remove)
         # Execute the given commands inside each project
-        _check_in_meta_repo
+        _check_in_meta_repo $@
         _remove_submodule $@
         ;;
     set)
         # Config the meta repo to use these settings for projects
-        _check_in_meta_repo
+        _check_in_meta_repo $@
         _set_project_config $@
         ;;
     uninstall)
@@ -130,7 +137,7 @@ case ${ACTION} in
         exit 1
         ;;
     view)
-        _check_in_meta_repo ${1:-''}
+        _check_in_meta_repo $@
         _view_submodules $@
         ;;
     *)
