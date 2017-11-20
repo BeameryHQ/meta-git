@@ -89,7 +89,7 @@ ACTION=`echo $ACTION | tr '[:upper:]' '[:lower:]'`
 [ $# -ge 1 ] && shift 1
 case ${ACTION} in
     add)
-        _check_in_meta_repo
+        _check_in_meta_repo $@
         _add_project $@
         ;;
     checkout)
