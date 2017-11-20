@@ -1,0 +1,137 @@
+#! /bin/sh
+set -eu
+ABSOLUTE_PATH=$(cd "$(dirname "$0")"; pwd -P)
+
+# To avoid having a massive file containing all scripts
+# I have opted to load all functions in as 'modules'
+# to allow for easy break down of code.
+
+for action in `ls ${ABSOLUTE_PATH}/actions`;do
+  . ${ABSOLUTE_PATH}/actions/${action}
+done
+
+_global_info() {
+    >&2 cat << EOF
+`basename $0` -- Information
+
+The idea of this application is to reduce the overal complexity of directly
+trying to manage a meta repo.
+
+Usage:
+> `basename $0` [-h] [action] [args...]
+
+Flags:
+-h
+    Prints out this message
+
+This program employs the use of actions that you can apply to the meta repo.
+The actions avaliable are:
+add
+    This will add a new project to managed by the meta repo and set
+    the default tracking branch to master.
+clone
+    Downloads an entire meta repo and all of the submodules added.
+diff
+    Show project differences between local projects on the current
+    branch and the remote branch
+fetch
+    Pull all remote changes for projects and apply them locally.
+foreach
+    Runs the given args as a command inside each project
+    See its help for further information
+install
+    Installs a driver for the `basename $0` into the local system for global shell use.
+remove
+    This will remove a project from the meta repo.
+set
+    This will all you to enforce changes to a project(s) on your local
+    meta repo branch
+uninstall
+    Allows you uninstall the global function from your shell.
+update
+    Once you have installed the application, you can update to get all
+    the recent changes.
+view
+    This will show the current state of the meta repo.
+
+Notes:
+If you require help with an action, try:
+> `basename $0` [action] -h
+To find our more information.
+
+EOF
+}
+
+_check_in_meta_repo() {
+  if [ ! -f "${1:-`pwd`}/.gitmodules" ];then
+    >&2 echo  "[ERROR] There is no submodule file inside the current directory"
+    >&2 echo  "[ERROR] Stopping any further action"
+    exit -1
+  fi
+}
+
+# The variables that are required at global scope #
+ACTION=${1:-''}
+# Enforcing that it is lowercase
+ACTION=`echo $ACTION | tr '[:upper:]' '[:lower:]'`
+# Removing the action from the arguments string
+# From this part onwards, you can assume that this is the 'main'
+# of the script
+# Note: we are calling functions that are being imported from the
+#       actions directory.
+[ $# -ge 1 ] && shift 1
+case ${ACTION} in
+    add)
+        _check_in_meta_repo
+        _add_project $@
+        ;;
+    clone)
+        _clone_meta $@
+        ;;
+    diff)
+        # Compares local changes with a different branch
+        _check_in_meta_repo
+        _show_diff $@
+        ;;
+    fetch)
+        # Get all updates from all the projects from your local branch
+        _check_in_meta_repo
+        _fetch_changes $@
+        ;;
+    foreach)
+        # Execute the given commands inside each project
+        _check_in_meta_repo
+        _for_each $@
+        ;;
+    -h)
+      _global_info
+      exit 0
+      ;;
+    install)
+        _install
+        ;;
+    remove)
+        # Execute the given commands inside each project
+        _check_in_meta_repo
+        _remove_submodule $@
+        ;;
+    set)
+        # Config the meta repo to use these settings for projects
+        _check_in_meta_repo
+        _set_project_config $@
+        ;;
+    uninstall)
+        # Time to get sassy...
+        >&2 echo "[ERROR] Can't uninstall what isn't installed my friend..."
+        exit 1
+        ;;
+    view)
+        _check_in_meta_repo ${1:-''}
+        _view_submodules $@
+        ;;
+    *)
+        >&2 echo "[ERROR] unknown action ${ACTION:-'None entered'}"
+        >&2 echo "[ERROR] Please see `basename $0` -h"
+        exit 1
+        ;;
+esac
