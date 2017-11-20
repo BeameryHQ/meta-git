@@ -16,4 +16,4 @@ Run the following to install:
 > ./meta-helper install
 ```
 
-Note:_If you rely on autocomplete for commands, you'll need to restart your terminal._
+*Note:* _If you rely on autocomplete for commands, you'll need to restart your terminal._
