@@ -34,8 +34,6 @@ clone
 diff
     Show project differences between local projects on the current
     branch and the remote branch
-fetch
-    Pull all remote changes for projects and apply them locally.
 foreach
     Runs the given args as a command inside each project
     See its help for further information
@@ -43,6 +41,8 @@ install
     Installs a driver for the `basename $0` into the local system for global shell use.
 remove
     This will remove a project from the meta repo.
+pull
+    Pull all remote changes for projects and apply them locally.
 set
     This will all you to enforce changes to a project(s) on your local
     meta repo branch
