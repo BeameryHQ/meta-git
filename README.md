@@ -5,7 +5,7 @@
 ██║╚██╔╝██║██╔══╝     ██║   ██╔══██║    ╚════╝    ██║   ██║██║   ██║   
 ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║              ╚██████╔╝██║   ██║   
 ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝               ╚═════╝ ╚═╝   ╚═╝   
-                                                                       
+
 ```
 
 ## Getting started
@@ -14,7 +14,7 @@ to use it globally in your shell.
 
 Run the following to install:
 ```sh
-> ./meta-helper install
+> ./meta-git install
 ```
 
 _Note: If you rely on auto-complete for commands, you'll need to restart your terminal._
