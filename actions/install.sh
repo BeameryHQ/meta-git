@@ -49,8 +49,9 @@ esac
 
 # Check to see if meta helper repo has moved
 # as defer all interactions to the main script there.
-if [ ! -f "${DRIVER_LOCATION}" ];then
-  >&2 echo "[ERROR] It appears that meta-helper script has moved, please reinstall"
+if [ ! -x "${DRIVER_LOCATION}" ];then
+  >&2 echo "[ERROR] It appears that `basename $0` script has moved "
+  >&2 echo "[ERROR] please reinstall and make sure it is executable"
   exit -1
 fi
 
