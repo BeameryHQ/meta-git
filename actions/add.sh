@@ -18,7 +18,7 @@ Note:
 - Any repo that is added has to be accessible by all staff using
   the meta-repo otherwise it will become unusable for those that don't.
 EOF
-  exit 0
+    exit 0
   fi
   # Enforce that we track the master branch by default
   git submodule add -b master $@

@@ -12,6 +12,7 @@ This will pull all remote changes to the projects and apply them locally.
 Note:
 The default branch used to fetch from is master, if you need to change this
 please see `basename $0` set -h
+
 EOF
       exit 0
     fi

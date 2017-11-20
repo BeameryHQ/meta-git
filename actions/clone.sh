@@ -13,7 +13,7 @@ Usage:
 This work the exact same as git clone but provides the ability to fetch
 submodules at the same time.
 EOF
-  exit 0
+    exit 0
   fi
   git clone --recursive $@
 }

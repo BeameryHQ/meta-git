@@ -1,6 +1,15 @@
 #! /bin/sh
 
 _install() {
+  if [ ${1:-''} = '-h' ];then
+    >&2 cat << EOT
+`basename $0` install -- Information
+
+This will install `basename $0` on your local machine to
+make it accessible globally.
+EOT
+    exit 0
+  fi
   # Being sneaky, like the ninja, as to how we 'install' this
   # As (AFAIK) bash and zsh do not like to exec softlink as part
   # of the shell, we are going to handle that indirection for the shell;
@@ -8,7 +17,7 @@ _install() {
   # each time.
 
   DRIVER_DIRECTORY=$(echo "$(cd "$(dirname "$0")"; pwd)")
-  DRIVER_LOCATION=$(echo "$(cd "$(dirname "$0")"; pwd)/$(basename "$0")")
+  DRIVER_LOCATION=$(echo "${DRIVER_DIRECTORY}/$(basename "$0")")
 
   cat << EOF > /tmp/meta-helper
 #! /bin/sh

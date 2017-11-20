@@ -114,7 +114,7 @@ case ${ACTION} in
       exit 0
       ;;
     install)
-        _install
+        _install $@
         ;;
     pull)
         # Get all updates from all the projects from your local branch
