@@ -85,6 +85,10 @@ case ${ACTION} in
         _check_in_meta_repo
         _add_project $@
         ;;
+    checkout)
+        _check_in_meta_repo
+        _checkout_meta $@
+        ;;
     clone)
         _clone_meta $@
         ;;
