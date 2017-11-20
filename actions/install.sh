@@ -19,7 +19,7 @@ EOT
   DRIVER_DIRECTORY=$(echo "$(cd "$(dirname "$0")"; pwd)")
   DRIVER_LOCATION=$(echo "${DRIVER_DIRECTORY}/$(basename "$0")")
 
-  cat << EOF > /tmp/meta-helper
+  cat << EOF > /tmp/`basename $0`
 #! /bin/sh
 
 # ==================== NOTE ====================
@@ -56,7 +56,7 @@ fi
 
 ${DRIVER_LOCATION} \$@
 EOF
-  chmod a+x /tmp/meta-helper
+  chmod a+x /tmp/`basename $0`
   >&2 echo "[INFO] Need permission to install the application"
-  sudo mv /tmp/meta-helper /usr/local/bin/meta-helper
+  sudo mv /tmp/`basename $0` /usr/local/bin/`basename $0`
 }
