@@ -16,4 +16,8 @@ Run the following to install:
 > ./meta-helper install
 ```
 
-*Note:* _If you rely on autocomplete for commands, you'll need to restart your terminal._
+_Note: If you rely on auto-complete for commands, you'll need to restart your terminal._
+
+## What benefit does this give me?
+
+## Basic examples
