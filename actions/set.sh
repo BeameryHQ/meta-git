@@ -6,10 +6,10 @@ _set_project_config() {
     case $option in
       h)
         >&2 cat << EOF
-`basename $0` set -- information
+"$(basename "${0}")" set -- information
 
 Usage:
-`basename $0` set [-h] [-b remote_branch_name] projects...
+"$(basename "${0}")" set [-h] [-b remote_branch_name] projects...
 
 h)
   Displays this help message
@@ -28,34 +28,34 @@ Notes:
 EOF
         ;;
       b)
-        BRANCH=${OPTARG}
+        BRANCH="${OPTARG}"
         ;;
       \?)
         >&2 echo "[ERROR] Unknown option found ${OPTARG}"
-        >&2 echo "[INFO] please see \"`basename $0` set -h\" for usage"
+        >&2 echo "[INFO] please see \"$(basename "${0}") set -h\" for usage"
         exit 1
         ;;
       esac
   done
   shift $(( OPTIND - 1 ))
-  for project in $@; do
-    if [ ! -d ${project} ];then
+  for project in "$@"; do
+    if [ ! -d "${project}" ];then
       >&2 echo "[ERROR] No valid directory listed -- ${project}"
       exit -1
     fi
-    if   [ ! -z "`git -C ${project} show-branch remotes/origin/${BRANCH} 2>/dev/null || true`" ];then
+    if   [ ! -z "$(git -C "${project}" show-branch remotes/origin/"${BRANCH}" 2>/dev/null || true)" ];then
       >&2 echo "[INFO] Found ${BRANCH} listed on remote, using that"
-      git -C ${project} checkout origin/${BRANCH}
-    elif [ ! -z "`git -C ${project} rev-parse --verify ${BRANCH} 2>/dev/null || true`" ];then
+      git -C "${project}" checkout origin/"${BRANCH}"
+    elif [ ! -z "$(git -C "${project}" rev-parse --verify "${BRANCH}" 2>/dev/null || true)" ];then
       >&2 echo "[INFO] Found ${BRANCH} locally, using that"
-      git -C ${project} checkout ${BRANCH}
+      git -C "${project}" checkout "${BRANCH}"
     else
       >&2 echo "[INFO] ${BRANCH} not found, creating and pushing..."
-      git -C ${project} checkout -b ${BRANCH}
-      git -C ${project} push --set-upstream origin ${BRANCH}
+      git -C "${project}" checkout -b "${BRANCH}"
+      git -C "${project}" push --set-upstream origin "${BRANCH}"
     fi
-    git submodule add -b ${BRANCH} ${project}
-    git config -f .gitmodules submodule.${project}.branch ${BRANCH}
+    git submodule add -b "${BRANCH}" "${project}"
+    git config -f .gitmodules submodule."${project}".branch "${BRANCH}"
   done
   >&2 echo "[INFO] Make sure you fetch any recent updates before continuing"
 }

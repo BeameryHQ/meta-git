@@ -6,19 +6,19 @@ ABSOLUTE_PATH=$(cd "$(dirname "$0")"; pwd -P)
 # I have opted to load all functions in as 'modules'
 # to allow for easy break down of code.
 
-for action in `ls ${ABSOLUTE_PATH}/actions`;do
-  . ${ABSOLUTE_PATH}/actions/${action}
+for action in ${ABSOLUTE_PATH}/actions/*;do
+  . "${action}"
 done
 
 _global_info() {
     >&2 cat << EOF
-`basename $0` -- Information
+$(basename "$0") -- Information
 
 The idea of this application is to reduce the overal complexity of directly
 trying to manage a meta repo.
 
 Usage:
-> `basename $0` [-h] [action] [args...]
+> $(basename "$0") [-h] [action] [args...]
 
 Flags:
 -h
@@ -41,7 +41,7 @@ foreach
     Runs the given args as a command inside each project
     See its help for further information
 install
-    Installs a driver for the `basename $0` into the local system for global shell use.
+    Installs a driver for the $(basename "${0}") into the local system for global shell use.
 remove
     This will remove a project from the meta repo.
 pull
@@ -59,7 +59,7 @@ view
 
 Notes:
 If you require help with an action, try:
-> `basename $0` [action] -h
+> $(basename "${0}") [action] -h
 To find our more information.
 
 EOF
@@ -67,10 +67,10 @@ EOF
 
 _check_in_meta_repo() {
   # Making sure we show the help message outside a meta repo
-  if [ ${1:-''} = '-h' ];then
+  if [ "${1:-''}" = '-h' ];then
     return
   fi
-  if [ ! -f "${1:-`pwd`}/.gitmodules" ];then
+  if [ ! -f "${1:-$(pwd)}/.gitmodules" ];then
     >&2 echo  "[ERROR] There is no submodule file inside the current directory"
     >&2 echo  "[ERROR] Stopping any further action"
     exit -1
@@ -78,9 +78,9 @@ _check_in_meta_repo() {
 }
 
 # The variables that are required at global scope #
-ACTION=${1:-''}
+ACTION="${1:-''}"
 # Enforcing that it is lowercase
-ACTION=`echo $ACTION | tr '[:upper:]' '[:lower:]'`
+ACTION=$(echo "${ACTION}" | tr '[:upper:]' '[:lower:]')
 # Removing the action from the arguments string
 # From this part onwards, you can assume that this is the 'main'
 # of the script
@@ -89,47 +89,47 @@ ACTION=`echo $ACTION | tr '[:upper:]' '[:lower:]'`
 [ $# -ge 1 ] && shift 1
 case ${ACTION} in
     add)
-        _check_in_meta_repo $@
-        _add_project $@
+        _check_in_meta_repo "$@"
+        _add_project "$@"
         ;;
     checkout)
-        _check_in_meta_repo $@
-        _checkout_meta $@
+        _check_in_meta_repo "$@"
+        _checkout_meta "$@"
         ;;
     clone)
-        _clone_meta $@
+        _clone_meta "$@"
         ;;
     diff)
         # Compares local changes with a different branch
-        _check_in_meta_repo $@
-        _show_diff $@
+        _check_in_meta_repo "$@"
+        _show_diff "$@"
         ;;
     foreach)
         # Execute the given commands inside each project
-        _check_in_meta_repo $@
-        _for_each $@
+        _check_in_meta_repo "$@"
+        _for_each "$@"
         ;;
     -h)
       _global_info
       exit 0
       ;;
     install)
-        _install $@
+        _install "$@"
         ;;
     pull)
         # Get all updates from all the projects from your local branch
-        _check_in_meta_repo $@
-        _pull_changes $@
+        _check_in_meta_repo "$@"
+        _pull_changes "$@"
         ;;
     remove)
         # Execute the given commands inside each project
-        _check_in_meta_repo $@
-        _remove_submodule $@
+        _check_in_meta_repo "$@"
+        _remove_submodule "$@"
         ;;
     set)
         # Config the meta repo to use these settings for projects
-        _check_in_meta_repo $@
-        _set_project_config $@
+        _check_in_meta_repo "$@"
+        _set_project_config "$@"
         ;;
     uninstall)
         # Time to get sassy...
@@ -137,12 +137,12 @@ case ${ACTION} in
         exit 1
         ;;
     view)
-        _check_in_meta_repo $@
-        _view_submodules $@
+        _check_in_meta_repo "$@"
+        _view_submodules "$@"
         ;;
     *)
         >&2 echo "[ERROR] unknown action ${ACTION:-'None entered'}"
-        >&2 echo "[ERROR] Please see `basename $0` -h"
+        >&2 echo "[ERROR] Please see $(basename "${0}") -h"
         exit 1
         ;;
 esac
