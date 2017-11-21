@@ -1,6 +1,6 @@
 #! /bin/sh
 set -eu
-ABSOLUTE_PATH=$(cd "$(dirname "$0")"; pwd -P)
+ABSOLUTE_PATH=$(cd "$(dirname "$0")" && pwd -P || exit -1)
 
 # To avoid having a massive file containing all scripts
 # I have opted to load all functions in as 'modules'
