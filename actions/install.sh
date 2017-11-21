@@ -39,7 +39,7 @@ case "\${1:-''}" in
   # outside of the actual repo, inside the repo, a user can use git.
   update)
       git -C "${DRIVER_DIRECTORY}" fetch --quiet --no-recurse-submodules
-      if [ "\$(git -C "${DRIVER_DIRECTORY}" rev-parse HEAD)" != "\$(git -C "${DRIVER_DIRECTORY}" rev-parse @{u})" ];then
+      if [ "\$(git -C ${DRIVER_DIRECTORY} rev-parse HEAD)" != "\$(git -C ${DRIVER_DIRECTORY} rev-parse @{u})" ];then
         git -C "${DRIVER_DIRECTORY}" pull --quiet
         >&2 echo "[INFO] We have now update $(basename "${0}")"
       fi
