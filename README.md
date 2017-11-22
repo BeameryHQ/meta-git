@@ -31,7 +31,10 @@ _Note: If you rely on auto-complete for commands, you'll need to restart your te
 
 # The power of meta-git!!!
 
-The commands used in _meta-git_ are analogous to _git_'s commands (with a couple extra) so there is little learning curve if you are a familiar with git. To get the most recent usage of _meta-git_ , please check its help message by going: _meta-git -h_ 
+The commands used in _meta-git_ are analogous to _git_'s commands (with a couple extra) so there is little learning curve if you are a familiar with git. To get the most recent usage of _meta-git_ , please check its help message by going:
+```sh
+> meta-git -h
+``` 
 
 ### Setting different repos to use the same branch
 This feature is awesome when you need to make hotfixes / features across different projects and ensure all the different projects still work together.
