@@ -29,4 +29,4 @@ Run the following to install:
 
 _Note: If you rely on auto-complete for commands, you'll need to restart your terminal._
 
-## Basic examples
+[![asciicast](https://asciinema.org/a/bVGjRiy046kl9jUj0mf54LdLL.png)](https://asciinema.org/a/bVGjRiy046kl9jUj0mf54LdLL)

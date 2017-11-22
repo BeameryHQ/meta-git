@@ -18,5 +18,5 @@ EOF
     fi
   # This will get all the updates from remote and checkout those changes
   git submodule init
-  git submodule update --recursive --remote "$@"
+  git submodule update --recursive --remote -j 10 "$@"
 }
