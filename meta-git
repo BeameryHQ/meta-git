@@ -1,11 +1,10 @@
-#! /bin/sh
+#! /bin/bash
 set -u
 ABSOLUTE_PATH=$(cd "$(dirname "$0")" && pwd -P || exit -1)
 
 # To avoid having a massive file containing all scripts
 # I have opted to load all functions in as 'modules'
 # to allow for easy break down of code.
-
 for action in ${ABSOLUTE_PATH}/core/*.sh;do
   . "${action}"
 done
@@ -90,12 +89,12 @@ ACTION=$(echo "${ACTION}" | tr '[:upper:]' '[:lower:]')
 #       a rather large switch statement, we check to see if the function exists
 #       and try exec it.
 [ $# -ge 1 ] && shift 1
-if [ ${ACTION} = '-h' ];then
+if [ "${ACTION}" = '-h' ];then
   _global_info
-elif type _core_check_"${ACTION}" >/dev/null 2>/dev/null; then
+elif [ ! -z "$(typeset -f _core_check_"${ACTION}")" ]; then
   _check_in_meta_repo "$@"
   _core_check_"${ACTION}" "$@"
-elif type _core_"${ACTION}" >/dev/null 2>/dev/null; then
+elif [ ! -z "$(typeset -f _core_"${ACTION}")" ]; then
     _core_"${ACTION}" "$@"
 elif [ -x "${ABSOLUTE_PATH}/external/${ACTION}" ];then
   "${ABSOLUTE_PATH}/external/${ACTION}" "$@"
