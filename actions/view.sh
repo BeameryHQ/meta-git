@@ -11,7 +11,7 @@ Usage:
 > "$(basename "${0}")" view [-h]
 h)
   Prints the help message
-  
+
 EOF
   exit 0
   fi

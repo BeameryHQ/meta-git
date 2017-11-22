@@ -43,3 +43,18 @@ This feature is awesome when you need to make hotfixes / features across differe
 ### Creating a branch to use a particular branches on repos
 The benefit of this is that we can developers easily share and change environments to match their co-workers.
 [![asciicast](https://asciinema.org/a/fCUSU04pDUBWeAc7iOlOxcjZC.png)](https://asciinema.org/a/fCUSU04pDUBWeAc7iOlOxcjZC)
+
+## Things to watch out for...
+
+_"Missing changes in the meta repo"_
+
+If you are working on repos that are submodules and haven't set the meta repo to now use the new branch,
+your changes are only visible locally. Anyone trying to use your meta repo branch would
+get the default branch of the submodules not the branch you intended.
+Easy fix is to use _meta-git set_ action to ensure changes are made and are preserved.
+
+_"Repos are in a detached state"_
+
+As the meta repo helps us to track changes in submodules, it does not use
+the branch name to track but rather the commit hash of the repo.
+It is still tracking said branch but it will show it is a detached state.
