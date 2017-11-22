@@ -32,3 +32,7 @@ _Note: If you rely on auto-complete for commands, you'll need to restart your te
 ## The power of meta-git!!!
 _setting different repos to use the same branch_
 [![asciicast](https://asciinema.org/a/bVGjRiy046kl9jUj0mf54LdLL.png)](https://asciinema.org/a/bVGjRiy046kl9jUj0mf54LdLL)
+
+_creating a branch to use a particular branches on repos_
+[![asciicast](https://asciinema.org/a/fCUSU04pDUBWeAc7iOlOxcjZC.png)](https://asciinema.org/a/fCUSU04pDUBWeAc7iOlOxcjZC)
+The benefit of this is that we can developers easily share and change environments to match their co-workers.
