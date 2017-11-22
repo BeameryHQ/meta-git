@@ -89,11 +89,11 @@ ACTION=$(echo "${ACTION}" | tr '[:upper:]' '[:lower:]')
 [ $# -ge 1 ] && shift 1
 case ${ACTION} in
     add)
-        _check_in_meta_repo "$@"
+        _check_in_meta_repo
         _add_project "$@"
         ;;
     checkout)
-        _check_in_meta_repo "$@"
+        _check_in_meta_repo
         _checkout_meta "$@"
         ;;
     clone)
@@ -101,12 +101,12 @@ case ${ACTION} in
         ;;
     diff)
         # Compares local changes with a different branch
-        _check_in_meta_repo "$@"
+        _check_in_meta_repo
         _show_diff "$@"
         ;;
     foreach)
         # Execute the given commands inside each project
-        _check_in_meta_repo "$@"
+        _check_in_meta_repo
         _for_each "$@"
         ;;
     -h)
@@ -118,17 +118,17 @@ case ${ACTION} in
         ;;
     pull)
         # Get all updates from all the projects from your local branch
-        _check_in_meta_repo "$@"
+        _check_in_meta_repo
         _pull_changes "$@"
         ;;
     remove)
         # Execute the given commands inside each project
-        _check_in_meta_repo "$@"
+        _check_in_meta_repo
         _remove_submodule "$@"
         ;;
     set)
         # Config the meta repo to use these settings for projects
-        _check_in_meta_repo "$@"
+        _check_in_meta_repo
         _set_project_config "$@"
         ;;
     uninstall)
@@ -137,7 +137,7 @@ case ${ACTION} in
         exit 1
         ;;
     view)
-        _check_in_meta_repo "$@"
+        _check_in_meta_repo 
         _view_submodules "$@"
         ;;
     *)
