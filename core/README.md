@@ -10,13 +10,13 @@ A core action is built of the following:
 
 Each core module must contain a function of the following semantics:
 
-*"core_check_<action>"*
+*"core_check_[action]"*
 
 This will ensure that we check to make sure we are in a meta repo in the local
 file directory before executing the function.
 The only exception to the rule is when '-h' is passed in.
 
-*"core_<action>"*
+*"core_[action]"*
 
 This is an action that does not require to be inside a meta repo directory.
 Ie. Clone
