@@ -40,7 +40,7 @@ case "\${1:-''}" in
   update)
       git -C "${DRIVER_DIRECTORY}" fetch --quiet --no-recurse-submodules
       if [ "\$(git -C ${DRIVER_DIRECTORY} rev-parse HEAD)" != "\$(git -C ${DRIVER_DIRECTORY} rev-parse @{u})" ];then
-        git -C "${DRIVER_DIRECTORY}" pull --quiet
+        git -C "${DRIVER_DIRECTORY}" pull
         >&2 echo "[INFO] We have now update $(basename "${0}")"
       fi
       exit 0
