@@ -40,7 +40,7 @@ The commands used in _meta-git_ are analogous to _git_'s commands (with a couple
 This feature is awesome when you need to make hotfixes / features across different projects and ensure all the different projects still work together.
 [![asciicast](https://asciinema.org/a/bVGjRiy046kl9jUj0mf54LdLL.png)](https://asciinema.org/a/bVGjRiy046kl9jUj0mf54LdLL)
 
-### Creating a branch to use a particular branches on repos
+### Creating a branch that reflects your local development
 The benefit of this is that we can developers easily share and change environments to match their co-workers.
 [![asciicast](https://asciinema.org/a/fCUSU04pDUBWeAc7iOlOxcjZC.png)](https://asciinema.org/a/fCUSU04pDUBWeAc7iOlOxcjZC)
 
