@@ -6,7 +6,7 @@ ABSOLUTE_PATH=$(cd "$(dirname "$0")" && pwd -P || exit -1)
 # I have opted to load all functions in as 'modules'
 # to allow for easy break down of code.
 
-for action in ${ABSOLUTE_PATH}/core/*;do
+for action in ${ABSOLUTE_PATH}/core/*.sh;do
   . "${action}"
 done
 
@@ -90,7 +90,9 @@ ACTION=$(echo "${ACTION}" | tr '[:upper:]' '[:lower:]')
 #       a rather large switch statement, we check to see if the function exists
 #       and try exec it.
 [ $# -ge 1 ] && shift 1
-if command _core_check_"${ACTION}" >/dev/null 2>/dev/null; then
+if [ ${ACTION} = '-h' ];then
+  _global_info
+elif command _core_check_"${ACTION}" >/dev/null 2>/dev/null; then
   _check_in_meta_repo "$@"
   _core_check_"${ACTION}" "$@"
 elif command _core_"${ACTION}" >/dev/null 2>/dev/null; then
