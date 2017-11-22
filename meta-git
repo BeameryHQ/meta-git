@@ -56,6 +56,13 @@ update
 view
     This will show the current state of the meta repo.
 
+External Actions that can be used:
+$(for module in ${ABSOLUTE_PATH}/external/*;do
+  if [ -x "${module}" ];then
+    echo -e ">\t$(basename "${module}")"
+  fi
+done)
+
 Notes:
 If you require help with an action, try:
 > $(basename "${0}") [action] -h
@@ -99,7 +106,7 @@ elif [ ! -z "$(typeset -f _core_"${ACTION}")" ]; then
 elif [ -x "${ABSOLUTE_PATH}/external/${ACTION}" ];then
   "${ABSOLUTE_PATH}/external/${ACTION}" "$@"
 else
-  >&2 echo "[ERROR] unknown action ${ACTION:-'None entered'}"
+  >&2 echo "[ERROR] unknown action ${1:-'None entered'}"
   >&2 echo "[ERROR] Please see $(basename "${0}") -h"
   exit 1
 fi
