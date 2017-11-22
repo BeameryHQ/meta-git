@@ -29,6 +29,6 @@ Run the following to install:
 
 _Note: If you rely on auto-complete for commands, you'll need to restart your terminal._
 
-### The power of meta-git
+## The power of meta-git!!!
 _setting different repos to use the same branch_
 [![asciicast](https://asciinema.org/a/bVGjRiy046kl9jUj0mf54LdLL.png)](https://asciinema.org/a/bVGjRiy046kl9jUj0mf54LdLL)
