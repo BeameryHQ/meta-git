@@ -9,7 +9,7 @@
 
 # Meta Git
 ## What is meta-git?
-The _meta-git_ project is an application that makes working with a meta repos (via the use of [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)) simple.
+The _meta-git_ project is an application that makes working with a meta repo (via the use of [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)) simple.
 The true power of _meta-git_ is that it abstractions advanced git usage and configuration to make it easy for any developer to get on board.
 
 ### What is a meta-repo?
