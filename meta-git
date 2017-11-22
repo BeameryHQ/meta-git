@@ -90,7 +90,6 @@ ACTION=$(echo "${ACTION}" | tr '[:upper:]' '[:lower:]')
 #       a rather large switch statement, we check to see if the function exists
 #       and try exec it.
 [ $# -ge 1 ] && shift 1
-set -x
 if [ ${ACTION} = '-h' ];then
   _global_info
 elif type _core_check_"${ACTION}" >/dev/null 2>/dev/null; then
