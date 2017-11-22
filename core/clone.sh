@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_clone_meta() {
+_core_clone() {
   if [ "${1:-''}" = '-h' ];then
   >&2 cat << EOF
 $(basename "${0}") clone -- information

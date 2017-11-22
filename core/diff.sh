@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_show_diff() {
+_core_check_diff() {
   if [ "${1:-''}" = "-h" ];then
     >&2 cat << EOF
 $(basename "${0}") diff -- information

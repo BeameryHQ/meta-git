@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_checkout_meta() {
+_core_check_checkout() {
   if [ "${1:-''}" = '-h' ];then
     >&2 cat << EOF
 $(basename "${0}") checkout -- Information

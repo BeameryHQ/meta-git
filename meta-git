@@ -6,7 +6,7 @@ ABSOLUTE_PATH=$(cd "$(dirname "$0")" && pwd -P || exit -1)
 # I have opted to load all functions in as 'modules'
 # to allow for easy break down of code.
 
-for action in ${ABSOLUTE_PATH}/actions/*;do
+for action in ${ABSOLUTE_PATH}/core/*;do
   . "${action}"
 done
 
@@ -87,62 +87,72 @@ ACTION=$(echo "${ACTION}" | tr '[:upper:]' '[:lower:]')
 # Note: we are calling functions that are being imported from the
 #       actions directory.
 [ $# -ge 1 ] && shift 1
-case ${ACTION} in
-    add)
-        _check_in_meta_repo "$@"
-        _add_project "$@"
-        ;;
-    checkout)
-        _check_in_meta_repo "$@"
-        _checkout_meta "$@"
-        ;;
-    clone)
-        _clone_meta "$@"
-        ;;
-    diff)
-        # Compares local changes with a different branch
-        _check_in_meta_repo "$@"
-        _show_diff "$@"
-        ;;
-    foreach)
-        # Execute the given commands inside each project
-        _check_in_meta_repo "$@"
-        _for_each "$@"
-        ;;
-    -h)
-      _global_info
-      exit 0
-      ;;
-    install)
-        _install "$@"
-        ;;
-    pull)
-        # Get all updates from all the projects from your local branch
-        _check_in_meta_repo "$@"
-        _pull_changes "$@"
-        ;;
-    remove)
-        # Execute the given commands inside each project
-        _check_in_meta_repo "$@"
-        _remove_submodule "$@"
-        ;;
-    set)
-        # Config the meta repo to use these settings for projects
-        _check_in_meta_repo "$@"
-        _set_project_config "$@"
-        ;;
-    uninstall)
-        # Time to get sassy...
-        >&2 echo "[ERROR] Can't uninstall what isn't installed my friend..."
-        exit 1
-        ;;
-    view)
-        _check_in_meta_repo "$@"
-        _view_submodules "$@"
-        ;;
-    *)
-        >&2 echo "[ERROR] unknown action ${ACTION:-'None entered'}"
-        >&2 echo "[ERROR] Please see $(basename "${0}") -h"
-        exit 1
-        ;;
-esac
+if type _core_check_"${ACTION}" >/dev/null 2>/dev/null; then
+  _check_in_meta_repo "$@"
+  _core_check_"${ACTION}" "$@"
+elif type _core_"${ACTION}" >/dev/null 2>/dev/null; then
+    _core_"${ACTION}" "$@"
+else
+  >&2 echo "[ERROR] unknown action ${ACTION:-'None entered'}"
+  >&2 echo "[ERROR] Please see $(basename "${0}") -h"
+  exit 1
+fi
+# case ${ACTION} in
+#     add)
+#         _check_in_meta_repo "$@"
+#         _add_project "$@"
+#         ;;
+#     checkout)
+#         _check_in_meta_repo "$@"
+#         _checkout_meta "$@"
+#         ;;
+#     clone)
+#         _clone_meta "$@"
+#         ;;
+#     diff)
+#         # Compares local changes with a different branch
+#         _check_in_meta_repo "$@"
+#         _show_diff "$@"
+#         ;;
+#     foreach)
+#         # Execute the given commands inside each project
+#         _check_in_meta_repo "$@"
+#         _for_each "$@"
+#         ;;
+#     -h)
+#       _global_info
+#       exit 0
+#       ;;
+#     install)
+#         _install "$@"
+#         ;;
+#     pull)
+#         # Get all updates from all the projects from your local branch
+#         _check_in_meta_repo "$@"
+#         _pull_changes "$@"
+#         ;;
+#     remove)
+#         # Execute the given commands inside each project
+#         _check_in_meta_repo "$@"
+#         _remove_submodule "$@"
+#         ;;
+#     set)
+#         # Config the meta repo to use these settings for projects
+#         _check_in_meta_repo "$@"
+#         _set_project_config "$@"
+#         ;;
+#     uninstall)
+#         # Time to get sassy...
+#         >&2 echo "[ERROR] Can't uninstall what isn't installed my friend..."
+#         exit 1
+#         ;;
+#     view)
+#         _check_in_meta_repo "$@"
+#         _view_submodules "$@"
+#         ;;
+#     *)
+#         >&2 echo "[ERROR] unknown action ${ACTION:-'None entered'}"
+#         >&2 echo "[ERROR] Please see $(basename "${0}") -h"
+#         exit 1
+#         ;;
+# esac

@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_set_project_config() {
+_core_check_set() {
   BRANCH='master'
   while getopts ":hb:" option; do
     case $option in

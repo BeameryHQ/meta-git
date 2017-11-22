@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_for_each() {
+_core_check_foreach() {
   if [ "${1:-''}" = "-h" ];then
     >&2 cat  << EOF
 $(basename "${0}") foreach -- Information

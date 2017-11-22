@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_remove_submodule() {
+_core_check_remove() {
   if [ "${1:-''}" = "-h" ];then
     >&2 cat << EOF
 "$(basename "${0}")" remove -- information

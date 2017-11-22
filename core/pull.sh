@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_pull_changes() {
+_core_check_pull() {
     if [ "${1:-''}" = "-h" ];then
       >&2 cat << EOF
 "$(basename "${0}")" pull -- Information

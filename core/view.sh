@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_view_submodules() {
+_core_check_view() {
   if [ "${1:-''}" = '-h' ];then
     >&2 cat << EOF
 "$(basename "${0}")" view -- Information

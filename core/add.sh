@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Start of the abstracted functionality
-_add_project() {
+_core_check_add() {
   if [ "${1:-''}" = "-h" ];then
     >&2 cat << EOF
 $(basename "${0}") add -- information

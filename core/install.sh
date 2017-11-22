@@ -1,6 +1,6 @@
 #! /bin/sh
 
-_install() {
+_core_install() {
   if [ "${1:-''}" = '-h' ];then
     >&2 cat << EOT
 $(basename "${0}") install -- Information
