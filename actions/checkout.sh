@@ -20,5 +20,5 @@ EOF
     exit 0
   fi
   git checkout --quiet "$@"
-  git submodule update --checkout -j 10
+  git submodule update --init --checkout -j 10
 }
