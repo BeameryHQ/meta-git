@@ -1,0 +1,29 @@
+#! /bin/sh
+PACKAGES=($(git submodule foreach --quiet 'basename $(pwd)'))
+LAST_PACKAGE=${PACKAGES[$((${#PACKAGES[@]} - 1))]}
+# Creating a package jso
+cat << EOF > package.json
+{
+    "name"   : "$(basename "$(pwd)")",
+    "version": "1.0.0",
+    "description" : "An auto generated meta repo package",
+    "main" : "false",
+    "dependencies": {
+$(for folder in ${PACKAGES[@]}; do
+    # Ignore anything that isn't a node application
+    if [ ! -f "${folder}/package.json" ]; then
+        continue
+    fi
+    printf "\t\"${folder}\" : \"file:${folder}\""
+    if [ "${folder}" !=  "${LAST_PACKAGE}" ];then
+        printf ",\n"
+    fi
+done)
+    },
+    "scripts": {
+        "test": "false"
+    },
+    "author": "$(hostname)",
+    "license": "ISC"
+}
+EOF
