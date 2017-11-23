@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_checkout() {
+  cat << EOF
+This will allow to switch / create meta branches within the meta repo.
+EOF
+}
+
 _core_check_checkout() {
   if [ "${1:-''}" = '-h' ];then
     >&2 cat << EOF

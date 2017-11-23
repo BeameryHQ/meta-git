@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_remove() {
+  cat << EOF
+This will remove a submodule from the meta repo.
+EOF
+}
+
 _core_check_remove() {
   if [ "${1:-''}" = "-h" ];then
     >&2 cat << EOF

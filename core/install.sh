@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_install() {
+  cat << EOF
+Installs a driver for $(basename "${0}") on the local system for global shell use.
+EOF
+}
+
 _core_install() {
   if [ "${1:-''}" = '-h' ];then
     >&2 cat << EOT

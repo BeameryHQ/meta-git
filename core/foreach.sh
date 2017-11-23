@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_foreach(){
+  cat << EOF
+Runs the given command(s) in each submodule.
+EOF
+}
+
 _core_check_foreach() {
   if [ "${1:-''}" = "-h" ];then
     >&2 cat  << EOF

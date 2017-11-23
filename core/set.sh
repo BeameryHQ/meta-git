@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_set() {
+  cat << EOF
+This will all you to enforce changes to a project(s) on your local meta repo branch.
+EOF
+}
+
 _core_check_set() {
   BRANCH='master'
   while getopts ":hb:" option; do

@@ -25,36 +25,16 @@ Flags:
 
 This program employs the use of actions that you can apply to the meta repo.
 The actions avaliable are:
-add
-    This will add a new project to managed by the meta repo and set
-    the default tracking branch to master.
-checkout
-    This will allow to switch / create meta branches and ensure
-    the submodules are at the correct state.
-clone
-    Downloads an entire meta repo and all of the submodules added.
-diff
-    Show project differences between local projects on the current
-    branch and the remote branch
-foreach
-    Runs the given args as a command inside each project
-    See its help for further information
-install
-    Installs a driver for the $(basename "${0}") into the local system for global shell use.
-remove
-    This will remove a project from the meta repo.
-pull
-    Pull all remote changes for projects and apply them locally.
-set
-    This will all you to enforce changes to a project(s) on your local
-    meta repo branch
-uninstall
-    Allows you uninstall the global function from your shell.
-update
-    Once you have installed the application, you can update to get all
-    the recent changes.
-view
-    This will show the current state of the meta repo.
+
+Core Actions:
+$(for action in ${ABSOLUTE_PATH}/core/*.sh; do
+  name=$(basename "${action}" | sed -e 's/.sh//g')
+  echo -e "> ${name}\n\t$(_info_"${name}")"
+done)
+$(if [ -x "/usr/local/bin/$(basename "$0")" ]; then
+  echo -e "> uninstall\n\tAllows you uninstall the global function from your shell."
+  echo -e "> update\n\tallows to install recent changes."
+fi)
 
 External Actions that can be used:
 $(for module in ${ABSOLUTE_PATH}/external/*;do
@@ -65,7 +45,7 @@ done)
 
 Notes:
 If you require help with an action, try:
-> $(basename "${0}") [action] -h
+>   $(basename "${0}") [action] -h
 To find our more information.
 
 EOF

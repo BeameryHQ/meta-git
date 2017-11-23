@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_view() {
+  cat << EOF
+This will show the current state of the meta repo.
+EOF
+}
+
 _core_check_view() {
   if [ "${1:-''}" = '-h' ];then
     >&2 cat << EOF

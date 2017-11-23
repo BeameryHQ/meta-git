@@ -1,5 +1,10 @@
 #! /bin/sh
 
+_info_diff() {
+  cat << EOF
+Show differences across branches or commits.
+EOF
+}
 _core_check_diff() {
   if [ "${1:-''}" = "-h" ];then
     >&2 cat << EOF

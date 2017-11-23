@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_clone() {
+  cat << EOF
+Downloads an entire meta repo and all of the submodules added.
+EOF
+}
+
 _core_clone() {
   if [ "${1:-''}" = '-h' ];then
   >&2 cat << EOF

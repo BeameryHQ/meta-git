@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_pull() {
+  cat << EOF
+Pull all remote changes for projects and apply them locally.
+EOF
+}
+
 _core_check_pull() {
     if [ "${1:-''}" = "-h" ];then
       >&2 cat << EOF

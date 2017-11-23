@@ -1,5 +1,11 @@
 #! /bin/sh
 
+_info_add() {
+  cat << EOF
+This will add a new project to managed by the meta repo.
+EOF
+}
+
 # Start of the abstracted functionality
 _core_check_add() {
   if [ "${1:-''}" = "-h" ];then
