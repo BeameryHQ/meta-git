@@ -1,0 +1,11 @@
+#! /bin/sh
+
+if [ -z "$(which lerna 2>/dev/null)" ];then
+  >&2 echo "[ERROR] $(basename "$0") requires lerna to be installed"
+fi
+
+# Going through each directory and bootstraping any lerna projects
+# to ensure that we don't try search for node modules that don't exist
+# on the remote. 
+git submodule foreach --quiet '[ -f "lerna.json" ] && lerna bootstrap || true'
+npm install
