@@ -1,4 +1,15 @@
 #! /bin/sh
+if [ "${1:-''}" = '-h' ];then
+  cat << EOF
+$(basename "$0") -- Information
+
+This application creates a package json from all the submodules
+listed within a meta repo. All submodules that contain a 'package.json'
+at the root level are considered to be a node application.
+EOF
+  exit 0
+fi
+
 PACKAGES=($(git submodule foreach --quiet 'basename $(pwd)'))
 LAST_PACKAGE=${PACKAGES[$((${#PACKAGES[@]} - 1))]}
 # Creating a package jso
