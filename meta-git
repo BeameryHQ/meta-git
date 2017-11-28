@@ -34,6 +34,7 @@ done)
 $(if [ -x "/usr/local/bin/$(basename "$0")" ]; then
   echo -e "> uninstall\n\tAllows you uninstall the global function from your shell."
   echo -e "> update\n\tallows to install recent changes."
+  echo -e "> location\n\tPrints out the path of the meta-git library"
 fi)
 
 External Actions that can be used:

@@ -47,8 +47,13 @@ case "\${1:-''}" in
       git -C "${DRIVER_DIRECTORY}" fetch --quiet --no-recurse-submodules
       if [ "\$(git -C ${DRIVER_DIRECTORY} rev-parse HEAD)" != "\$(git -C ${DRIVER_DIRECTORY} rev-parse @{u})" ];then
         git -C "${DRIVER_DIRECTORY}" pull
+        "${DRIVER_LOCATION}" install
         >&2 echo "[INFO] We have now update $(basename "${0}")"
       fi
+      exit 0
+      ;;
+  location)
+      echo "${DRIVER_DIRECTORY}"
       exit 0
       ;;
 esac
