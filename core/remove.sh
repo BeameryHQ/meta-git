@@ -29,6 +29,10 @@ EOF
       exit -1
     fi
     # Need to programaticlly delete the lines from the file
+    # This is some rather shite code but lets explain
+    # In order to delete the corect submodule from .gitmodules
+    # We need to figure out where the line starts and where it ends
+    # once we have reached another submodule definition then we can stop.
     START=-1
     COUNT=0
     grep --colour=never -n -T -A 4 "\[submodule\s*\"${module}\"\]" .gitmodules | tr '[\-:]' ' ' | while read number tail; do
