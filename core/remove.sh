@@ -22,15 +22,29 @@ unchanged on your local directory.
 EOF
     exit 0
   fi
-
   for module in "$@"; do
     if [ ! -d "${module}" ];then
       >&2 echo "[ERROR] The submodule does not appear in the local file directory"
       >&2 echo "[ERROR] The removal of ${module} would need to be done by hand"
       exit -1
     fi
-    git submodule deinit --force "${module}"
+    # Need to programaticlly delete the lines from the file
+    START=-1
+    COUNT=0
+    grep --colour=never -n -T -A 4 "\[submodule\s*\"${module}\"\]" .gitmodules | tr '[\-:]' ' ' | while read number tail; do
+        if [ ${START} -eq -1 ];then
+            START=${number}
+            COUNT=${number}
+            continue
+        fi
+        if [ ! -z "$(echo ${tail} | grep -E "submodule")" ];then
+            sed -i "${START},${COUNT}d" .gitmodules
+            break
+        fi
+        COUNT=$((COUNT + 1))
+    done
+    git submodule deinit --force --"${module}"
     git rm --cached "${module}"
-    rm -rf .git/modules/"${module}"
+    rm -rf ".git/modules/${module}"
   done
 }
