@@ -10,7 +10,7 @@ EOF
   exit 0
 fi
 
-PACKAGES=($(git submodule foreach --quiet 'basename $(pwd)' | sort))
+PACKAGES=($(git submodule foreach --quiet 'basename $(pwd)'))
 LAST_PACKAGE=${PACKAGES[$((${#PACKAGES[@]} - 1))]}
 # Creating a package jso
 cat << EOF > package.json

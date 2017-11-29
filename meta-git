@@ -72,7 +72,7 @@ ACTION=$(echo "${ACTION}" | tr '[:upper:]' '[:lower:]')
 # From this part onwards, you can assume that this is the 'main'
 # of the script
 # Note: we are calling functions that are being imported from the
-#       actions directory.
+#       core directory.
 #       We have preset function names that we would expect and to avoid
 #       a rather large switch statement, we check to see if the function exists
 #       and try exec it.
@@ -85,6 +85,7 @@ elif [ ! -z "$(typeset -f _core_check_"${ACTION}")" ]; then
 elif [ ! -z "$(typeset -f _core_"${ACTION}")" ]; then
     _core_"${ACTION}" "$@"
 elif [ -x "${ABSOLUTE_PATH}/external/${ACTION}" ];then
+  _check_in_meta_repo "$@"
   "${ABSOLUTE_PATH}/external/${ACTION}" "$@"
 else
   >&2 echo "[ERROR] unknown action ${ACTION:-'None entered'}"
