@@ -28,6 +28,9 @@ EOF
       >&2 echo "[ERROR] The removal of ${module} would need to be done by hand"
       exit -1
     fi
+    git submodule deinit --force -- "${module}"
+    git rm --cached "${module}"
+    rm -rf ".git/modules/${module}"
     # Need to programaticlly delete the lines from the file
     # This is some rather shite code but lets explain
     # In order to delete the corect submodule from .gitmodules
@@ -35,20 +38,18 @@ EOF
     # once we have reached another submodule definition then we can stop.
     START=-1
     COUNT=0
-    grep --colour=never -n -T -A 4 "\[submodule\s*\"${module}\"\]" .gitmodules | tr '[\-:]' ' ' | while read number tail; do
+    grep --colour=never -n -A 4 "\[submodule\s*\"${module}\"\]" .gitmodules | tr '[\-:]' ' ' | while read number tail; do
         if [ ${START} -eq -1 ];then
             START=${number}
             COUNT=${number}
             continue
         fi
         if [ ! -z "$(echo ${tail} | grep -E "submodule")" ];then
-            sed -i "${START},${COUNT}d" .gitmodules
+            sed -i'.bak' "${START},${COUNT}d" .gitmodules
+            rm -f .gitmodules.bak
             break
         fi
         COUNT=$((COUNT + 1))
     done
-    git submodule deinit --force --"${module}"
-    git rm --cached "${module}"
-    rm -rf ".git/modules/${module}"
   done
 }
