@@ -32,6 +32,7 @@ $(for folder in ${PACKAGES[@]}; do
 done)
     },
     "scripts": {
+        "install" : "meta-git node-install",
         "test": "false"
     },
     "author": "$(hostname)",
