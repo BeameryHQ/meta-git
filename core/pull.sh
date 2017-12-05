@@ -25,5 +25,4 @@ EOF
   set -e
   git submodule init
   git pull --recurse-submodules
-  git submodule update --recursive --remote -j 10 "$@" | sed -e 's/^/\[GIT\]/g'
 }
