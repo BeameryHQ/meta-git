@@ -31,11 +31,6 @@ _clean_up() {
 # Totally not using trap like golang's defer....
 trap '_clean_up' EXIT
 
-
-if [ -z "$(which lerna 2>/dev/null)" ];then
-  >&2 echo "[ERROR] $(basename "$0") requires lerna to be installed"
-fi
-
 >&2 echo "[INFO] Removing old node modules"
 rm -rf node_modules
 git submodule foreach --quiet 'rm -rf node_modules'
@@ -64,6 +59,3 @@ done
 
 >&2 echo "[INFO] Running npm install"
 npm install $@
-
->&2 echo "[INFO] Bootstraping any lerna projects"
-git submodule foreach --quiet '[ -f "lerna.json" ] && lerna bootstrap || true'
