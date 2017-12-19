@@ -28,5 +28,5 @@ EOF
   # This will get all the updates from remote and checkout those changes
   >&2 echo "[INFO] Fetching latest changes in submodules"
   git submodule init
-  git submodule update --recursive --remote -j 10 "$@"
+  git submodule update --recursive --remote --merge -j 10 "$@"
 }
