@@ -27,5 +27,5 @@ EOF
     exit 0
   fi
   # Enforce that we track the master branch by default
-  git submodule add -b master "$*"
+  git submodule add -b master -- "$*"
 }
