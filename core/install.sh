@@ -1,5 +1,5 @@
 #! /bin/sh
-
+TMPD=`mktemp -d`
 _info_install() {
   cat << EOF
 Installs a driver for $(basename "${0}") on the local system for global shell use.
@@ -25,7 +25,7 @@ EOT
   DRIVER_DIRECTORY="$(cd "$(dirname "$0")" && pwd -P || exit -1)"
   DRIVER_LOCATION=$(echo "${DRIVER_DIRECTORY}/$(basename "$0")")
 
-  cat << EOF > /tmp/"$(basename "${0}")"
+  cat << EOF > $TMPD/"$(basename "${0}")"
 #! /bin/sh
 
 # ==================== NOTE ====================
@@ -68,7 +68,11 @@ fi
 
 "${DRIVER_LOCATION}" "\$@"
 EOF
-  chmod a+x /tmp/"$(basename "${0}")"
-  >&2 echo "[INFO] Need permission to install the application"
-  sudo mv /tmp/"$(basename "${0}")" /usr/local/bin/"$(basename "${0}")"
+  touch $TMPD/"$(basename "${0}")"
+  chmod a+x $TMPD/"$(basename "${0}")"
+  if [ $? -ne 0 ]; then 
+    echo "[INFO] Need permission to install the application"
+    exit 1
+  fi
+  sudo mv $TMPD/"$(basename "${0}")" /usr/local/bin/"$(basename "${0}")"
 }
