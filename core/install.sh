@@ -18,7 +18,7 @@ EOT
     exit 0
   fi
   if [ "$(whoami)" != "root" ];then
-    >&2 echo "[ERROR] Installer requires root privilages"
+    >&2 echo "[ERROR] Installer requires to be run as root"
     exit -1
   fi
   # Being sneaky, like the ninja, as to how we 'install' this
