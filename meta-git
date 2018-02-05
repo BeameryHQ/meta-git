@@ -1,0 +1,94 @@
+#! /bin/bash
+set -u
+ABSOLUTE_PATH=$(cd "$(dirname "$0")" && pwd -P || exit -1)
+
+# To avoid having a massive file containing all scripts
+# I have opted to load all functions in as 'modules'
+# to allow for easy break down of code.
+for action in ${ABSOLUTE_PATH}/core/*.sh;do
+  . "${action}"
+done
+
+_global_info() {
+    >&2 cat << EOF
+$(basename "$0") -- Information
+
+The idea of this application is to reduce the overal complexity of directly
+trying to manage a meta repo.
+
+Usage:
+> $(basename "$0") [-h] [action] [args...]
+
+Flags:
+-h
+    Prints out this message
+
+This program employs the use of actions that you can apply to the meta repo.
+The actions avaliable are:
+
+Core Actions:
+$(for action in ${ABSOLUTE_PATH}/core/*.sh; do
+  name=$(basename "${action}" | sed -e 's/.sh//g')
+  echo -e "> ${name}\n\t$(_info_"${name}")"
+done)
+$(if [ -x "/usr/local/bin/$(basename "$0")" ]; then
+  echo -e "> uninstall\n\tAllows you uninstall the global function from your shell."
+  echo -e "> update\n\tallows to install recent changes."
+  echo -e "> location\n\tPrints out the path of the meta-git library"
+fi)
+
+External Actions that can be used:
+$(for module in ${ABSOLUTE_PATH}/external/*;do
+  if [ -x "${module}" ];then
+    echo -e ">\t$(basename "${module}")"
+  fi
+done)
+
+Notes:
+If you require help with an action, try:
+>   $(basename "${0}") [action] -h
+To find our more information.
+
+EOF
+}
+
+_check_in_meta_repo() {
+  # Making sure we show the help message outside a meta repo
+  if [ "${1:-''}" = '-h' ];then
+    return
+  fi
+  if [ ! -f "$(pwd)/.gitmodules" ];then
+    >&2 echo  "[ERROR] There is no submodule file inside the current directory"
+    >&2 echo  "[ERROR] Stopping any further action"
+    exit -1
+  fi
+}
+
+# The variables that are required at global scope #
+ACTION="${1:-''}"
+# Enforcing that it is lowercase
+ACTION=$(echo "${ACTION}" | tr '[:upper:]' '[:lower:]')
+# Removing the action from the arguments string
+# From this part onwards, you can assume that this is the 'main'
+# of the script
+# Note: we are calling functions that are being imported from the
+#       core directory.
+#       We have preset function names that we would expect and to avoid
+#       a rather large switch statement, we check to see if the function exists
+#       and try exec it.
+[ $# -ge 1 ] && shift 1
+if [ "${ACTION}" = '-h' ];then
+  _global_info
+elif [ ! -z "$(typeset -f _core_check_"${ACTION}")" ]; then
+  _check_in_meta_repo "$@"
+  _core_check_"${ACTION}" "$@"
+elif [ ! -z "$(typeset -f _core_"${ACTION}")" ]; then
+    _core_"${ACTION}" "$@"
+elif [ -x "${ABSOLUTE_PATH}/external/${ACTION}" ];then
+  _check_in_meta_repo "$@"
+  "${ABSOLUTE_PATH}/external/${ACTION}" "$@"
+else
+  >&2 echo "[ERROR] unknown action ${ACTION:-'None entered'}"
+  >&2 echo "[ERROR] Please see $(basename "${0}") -h"
+  exit 1
+fi

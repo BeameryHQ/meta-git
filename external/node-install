@@ -1,0 +1,61 @@
+#! /bin/sh
+if [ "${1}" = '-h' ];then
+  >&2 cat << EOF
+$(basename "${0}") -- Information
+
+This application allows for developer to install all the required node modules
+and enforces that packages found inside the meta repo are used first.
+This means any packages found inside the meta repo have preference over what
+is defined inside a project's package.json.
+
+Note:
+Any arguments given will be passed into 'npm i'
+EOF
+  exit 0
+fi
+set -eu
+PROJECTS=$(git submodule foreach --quiet '[ -f package.json ] && basename $(pwd) || true')
+
+_clean_up() {
+    >&2 echo "[INFO] Resetting modified package.json"
+    # replace the modified package.json with the original
+    git submodule foreach --quiet '[ -f "package.json.bak" ] && mv package.json.bak package.json && rm -f package.json.dirty || true'
+    git submodule foreach --quiet '[ -f "package-lock.json.bak" ] && mv package-lock.json.bak package-lock.json || true'
+    # This ensures that meta repo sees no changes made
+    # Currently a little dirty hack
+    >&2 echo "[INFO] Cleaning git tree"
+    git submodule foreach --quiet 'git status 2>/dev/null 1>/dev/null'
+}
+
+# Make sure we always clean up after ourselves
+# Totally not using trap like golang's defer....
+trap '_clean_up' EXIT
+
+>&2 echo "[INFO] Removing old node modules"
+rm -rf node_modules
+git submodule foreach --quiet 'rm -rf node_modules'
+# Blowing away any lock files
+rm -f package-lock.json yarn.lock
+
+>&2 echo "[INFO] Linking Projects locally"
+# Create a backup file
+git submodule foreach --quiet '[ -f "package.json" ] && cp package.json package.json.bak || true'
+# Modifing the package json
+for project in ${PROJECTS}; do
+    >&2 echo "> Checking ${project} package.json"
+    if [ -f "${project}/package-lock.json" ];then
+      mv "${project}/package-lock.json" "${project}/package-lock.json.bak"
+    fi
+    for replace in ${PROJECTS};do
+        if [ "${project}" = "${replace}" ];then
+          continue
+        fi
+        # Damned Mac OS uses a different version of sed instead of the GNU flavor
+        # So it always has to write a 'backup file'
+        # This fabled optional backup doesn't work on High Siera
+        sed -i'.dirty' -e 's/:[[:space:]]*\".*\/'"${replace}"'.*\"/: \"file:..\/'"${replace}"'\"/g' "${project}/package.json"
+    done
+done
+
+>&2 echo "[INFO] Running npm install"
+npm install $@

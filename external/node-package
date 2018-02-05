@@ -1,0 +1,41 @@
+#! /bin/sh
+if [ "${1:-''}" = '-h' ];then
+  cat << EOF
+$(basename "$0") -- Information
+
+This application creates a package json from all the submodules
+listed within a meta repo. All submodules that contain a 'package.json'
+at the root level are considered to be a node application.
+EOF
+  exit 0
+fi
+
+PACKAGES=($(git submodule foreach --quiet 'basename $(pwd)'))
+LAST_PACKAGE=${PACKAGES[$((${#PACKAGES[@]} - 1))]}
+# Creating a package jso
+cat << EOF > package.json
+{
+    "name"   : "$(basename "$(pwd)")",
+    "version": "1.0.0",
+    "description" : "An auto generated meta repo package",
+    "main" : "false",
+    "dependencies": {
+$(for folder in ${PACKAGES[@]}; do
+    # Ignore anything that isn't a node application
+    if [ ! -f "${folder}/package.json" ]; then
+        continue
+    fi
+    printf "\t\"${folder}\" : \"file:${folder}\""
+    if [ "${folder}" !=  "${LAST_PACKAGE}" ];then
+        printf ",\n"
+    fi
+done)
+    },
+    "scripts": {
+        "install" : "meta-git node-install",
+        "test": "false"
+    },
+    "author": "$(hostname)",
+    "license": "ISC"
+}
+EOF
