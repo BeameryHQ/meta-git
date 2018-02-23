@@ -21,5 +21,5 @@ h)
 EOF
     exit 0
   fi
-  git diff --submodule "$@"
+  git diff --submodule=diff "$@"
 }
