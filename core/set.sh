@@ -51,16 +51,16 @@ EOF
     fi
     if   [ ! -z "$(git -C "${project}" show-branch remotes/origin/"${BRANCH}" 2>/dev/null || true)" ];then
       >&2 echo "[INFO] Found ${BRANCH} listed on remote, using that"
-      git -C "${project}" checkout "${BRANCH}" | sed -e 's/^/\[GIT\] /g'
+      git -C "${project}" checkout "${BRANCH}"
     elif [ ! -z "$(git -C "${project}" rev-parse --verify "${BRANCH}" 2>/dev/null || true)" ];then
       >&2 echo "[INFO] Found ${BRANCH} locally, using that"
-      git -C "${project}" checkout "${BRANCH}" | sed -e 's/^/\[GIT\] /g'
+      git -C "${project}" checkout "${BRANCH}"
     else
       >&2 echo "[INFO] ${BRANCH} not found, creating and pushing..."
-      git -C "${project}" checkout -b "${BRANCH}" | sed -e 's/^/\[GIT\] /g'
-      git -C "${project}" push --set-upstream origin "${BRANCH}" | sed -e 's/^/\[GIT\] /g'
+      git -C "${project}" checkout -b "${BRANCH}"
+      git -C "${project}" push --set-upstream origin "${BRANCH}"
     fi
-    git config -f .gitmodules submodule."${project}".branch "${BRANCH}" | sed -e 's/^/\[GIT\] /g'
+    git config -f .gitmodules submodule."${project}".branch "${BRANCH}"
   done
   >&2 echo "[INFO] Make sure you fetch any recent updates before continuing"
 }
