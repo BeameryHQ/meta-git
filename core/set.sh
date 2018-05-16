@@ -8,7 +8,7 @@ EOF
 
 _core_check_set() {
   BRANCH='master'
-  while getopts ":hb:" option; do
+  while getopts ":hb:u" option; do
     case $option in
       h)
         >&2 cat << EOF
@@ -36,6 +36,9 @@ EOF
       b)
         BRANCH="${OPTARG}"
         ;;
+      u)
+        UPSTREAM="create"
+        ;;
       \?)
         >&2 echo "[ERROR] Unknown option found ${OPTARG}"
         >&2 echo "[INFO] please see \"$(basename "${0}") set -h\" for usage"
@@ -55,11 +58,15 @@ EOF
     elif [ ! -z "$(git -C "${project}" rev-parse --verify "${BRANCH}" 2>/dev/null || true)" ];then
       >&2 echo "[INFO] Found ${BRANCH} locally, using that"
       git -C "${project}" checkout "${BRANCH}"
-    else
+    elif [ ! -z "${UPSTREAM:-''}" ]; then
       >&2 echo "[INFO] ${BRANCH} not found, creating and pushing..."
       git -C "${project}" checkout -b "${BRANCH}"
       git -C "${project}" push --set-upstream origin "${BRANCH}"
+    else
+        >&2 echo "[INFO] Skiping this project"
+        continue
     fi
+
     git config -f .gitmodules submodule."${project}".branch "${BRANCH}"
   done
   >&2 echo "[INFO] Make sure you fetch any recent updates before continuing"
